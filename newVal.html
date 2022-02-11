@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valentine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        background: pink;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .heart {
+        width: 50px;
+        height: 50px;
+        background: red;
+        transform: rotate(45deg);
+        position: absolute;
+        left: 200px;
+        top: 200px;
+      }
+
+      .heart .left {
+        content: '';
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: red;
+        position: absolute;
+        left: -25px;
+        top: 0px;
+      }
+
+      .heart .right {
+        content: '';
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: red;
+        position: absolute;
+        left: 0px;
+        top: -25px;
+      }
+
+      h1, h2 {
+        color: white;
+        position: relative;
+	font-family: 'Parisienne', cursive;
+        font-size: 40px;
+      }
+
+      .panel {
+        z-index: 1;
+        padding: 40px;
+        background: rgba( 255, 154, 154, 0.10 );
+        box-shadow: 0 8px 32px 0 pink;
+        backdrop-filter: blur( 10.5px );
+        -webkit-backdrop-filter: blur( 10.5px );
+        border-radius: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="myAudio" src="C:/Users/rmfah/music/The Troggs - Love Is All Around.mp3"></audio>
+    <div class="panel" onclick="playAudio()">
+      <h2>To my beautiful wife Gail</h2>
+      <h1>Happy Valentine's Day</h1>
+      <h2>Love Always<br>Bob</h2>
+    <script>
+      const hearts = [];
+      const pinks = ["#ff748c", "#ff8da1", "#ffa7b6"];
+
+      class Heart {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.theta = Math.random() * Math.PI * 2;
+          const heartEl = document.createElement("div");
+          heartEl.classList.add("heart");
+          document.body.append(heartEl);
+          const color = pinks[parseInt(Math.random() * pinks.length)];
+          heartEl.style.background = color;
+    
+          const heartLeftEl = document.createElement("div");
+          heartLeftEl.classList.add('left');
+          heartLeftEl.style.background = color;
+          heartEl.appendChild(heartLeftEl);
+    
+          const heartRightEl = document.createElement("div");
+          heartRightEl.classList.add('right');
+          heartRightEl.style.background = color;
+          heartEl.appendChild(heartRightEl);
+    
+          this.el = heartEl;
+    
+          setTimeout(() => {
+            this.el.remove();
+            this.hearts.splice(this.hearts.indexOf(this));
+          }, 10000)
+        }
+
+        update() {
+          this.x += Math.cos(this.theta) * 1;
+          this.y += 1;
+          this.theta += 0.01;
+          this.el.style.left = `${this.x}px`;
+          this.el.style.top = `${this.y}px`;
+        }
+      }
+
+      setInterval(() => {
+        const heart = new Heart(Math.random() * window.innerWidth, -100);
+        hearts.push(heart);
+      }, 200);
+
+      setInterval(() => {
+        hearts.forEach((heart) => heart.update());
+      }, 10);
+      var count=0;
+      function playAudio() { 
+         if(count==0){
+	    console.log("count starts at: "+count)
+           count=1;
+	    console.log("count changed to: "+count)
+            document.getElementById('myAudio').play();
+	 }else{
+	   count=0;
+	    console.log("count Back to: "+count)
+	   document.getElementById('myAudio').pause();
+	   // remove timer to restart at beginning
+           //document.getElementById('myAudio').currentTime=0;
+	   //
+	 }
+      } 
+    </script>
+  </body>
+</html>
+
